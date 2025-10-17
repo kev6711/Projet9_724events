@@ -1,3 +1,6 @@
+
+import { useState } from "react";
+
 import Menu from "../../containers/Menu";
 import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
@@ -14,6 +17,24 @@ import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
   const {last} = useData()
+  const [modalContent, setModalContent] = useState("");
+  const modalSuccessMessage = (
+    <div className="ModalMessage--success">
+      <div>Message envoyé !</div>
+      <p>
+        Merci pour votre message nous tâcherons de vous répondre dans
+        les plus brefs délais
+      </p>
+    </div>
+  )
+  const modalErrorMessage = (
+    <div className="ModalMessage--success">
+      <div>Erreur - Message non envoyé !</div>
+      <p>
+        Tous les champs du formulaire doivent être remplis et avoir une adresse mail avec la bonne syntaxe
+      </p>
+    </div>
+  )
   return <>
     <header>
       <Menu />
@@ -94,20 +115,18 @@ const Page = () => {
       <div className="FormContainer" id="contact">
         <h2 className="Title">Contact</h2>
         <Modal
-          Content={
-            <div className="ModalMessage--success">
-              <div>Message envoyé !</div>
-              <p>
-                Merci pour votre message nous tâcherons de vous répondre dans
-                les plus brefs délais
-              </p>
-            </div>
-          }
+          Content={modalContent}
         >
           {({ setIsOpened }) => (
             <Form
-              onSuccess={() => setIsOpened(true)}
-              onError={() => null}
+              onSuccess={() => {
+                setModalContent(modalSuccessMessage);
+                setIsOpened(true);
+              }}
+              onError={() => {
+                setModalContent(modalErrorMessage);
+                setIsOpened(true);
+              }}
             />
           )}
         </Modal>
