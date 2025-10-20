@@ -13,10 +13,17 @@ import Logo from "../../components/Logo";
 import Icon from "../../components/Icon";
 import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
+import ModalEvent from "../../containers/ModalEvent";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const {last} = useData()
+  const {data} = useData()
+  const events = data?.events;
+  const sortedEventsDesc = events?.toSorted(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+  const mostRecentEvent = sortedEventsDesc?.[0];
+
   const [modalContent, setModalContent] = useState("");
   const modalSuccessMessage = (
     <div className="ModalMessage--success">
@@ -135,13 +142,18 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
-        <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
-          small
-          label="boom"
-        />
+        <Modal key={mostRecentEvent?.id} Content={<ModalEvent event={mostRecentEvent} />}>
+          {({ setIsOpened }) => (
+            <EventCard
+              onClick={() => setIsOpened(true)}
+              imageSrc={mostRecentEvent?.cover}
+              title={mostRecentEvent?.title}
+              date={new Date(mostRecentEvent?.date)}
+              small
+              label={mostRecentEvent?.type}
+            />
+          )}
+        </Modal>
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
