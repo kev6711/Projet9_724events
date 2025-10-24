@@ -10,9 +10,14 @@ describe("When Form is created", () => {
     await screen.findByText("Personel / Entreprise");
   });
 
-  describe("and a click is triggered on the submit button", () => {
+  describe("and a click is triggered on the submit button for a valid Form", () => {
     it("the success message is displayed", async () => {
       render(<Home />);
+      fireEvent.change(document.querySelector('input[name="lastName"]'), { target: { value: "Nom" } });
+      fireEvent.change(document.querySelector('input[name="firstName"]'), { target: { value: "Prenom" } });
+      fireEvent.change(document.querySelector('input[name="selection"]'), { target: { value: "Entreprise" } });
+      fireEvent.change(document.querySelector('input[name="email"]'), { target: { value: "nom.prenom@email.com" } });
+      fireEvent.change(document.querySelector('textarea[name="message"]'), { target: { value: "Message" } });
       fireEvent(
         await screen.findByText("Envoyer"),
         new MouseEvent("click", {
