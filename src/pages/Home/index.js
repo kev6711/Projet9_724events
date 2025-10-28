@@ -35,7 +35,7 @@ const Page = () => {
     </div>
   )
   const modalErrorMessage = (
-    <div className="ModalMessage--success">
+    <div className="ModalMessage--error">
       <div>Erreur - Message non envoyé !</div>
       <p>
         Tous les champs du formulaire doivent être remplis et avoir une adresse mail avec la bonne syntaxe
